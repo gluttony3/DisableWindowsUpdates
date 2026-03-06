@@ -1,119 +1,169 @@
 # Windows Updates Disabler/Enabler
 
-Програма для відключення/включення оновлень Windows 10 та Windows 11.
+A lightweight toolkit to fully disable or re-enable Windows Update on Windows 10 and Windows 11. Supports Batch, PowerShell, and Python — run whichever fits your workflow.
 
-## 🚀 Особливості
-
-- **Відключає служби оновлень** - Зупиняє wuauserv, BITS, DoSvc та інші
-- **Модифікує реєстр** - Проводить необхідні зміни в реєстрі Windows
-- **Відключає завдання** - Деактивує запланові задачі для оновлень
-- **Групова політика** - Застосовує параметри групової політики
-- **Точка відновлення** - Автоматично створює точку відновлення перед змінами
-- **Навчання** - Легко включити оновлення назад коли потрібно
-
-## 📋 Файли в проекті
-
-### Для запуску (рекомендується)
-- **`disable_windows_updates.bat`** - Batch файл для відключення оновлень
-- **`enable_windows_updates.bat`** - Batch файл для включення оновлень
-
-### Альтернатива (Python)
-- **`disable_windows_updates.py`** - Python скрипт для відключення (для тих хто переважає Python)
-- **`enable_windows_updates.py`** - Python скрипт для включення
-
-## ⚙️ Як використовувати
-
-### Метод 1: Batch файли (РЕКОМЕНДУЄТЬСЯ)
-
-1. **Завантажте файли** на ваш комп'ютер
-2. **Виключіть Антивірус** (якщо потрібно) - деякі антивіруси можуть блокувати модифікацію реєстру
-3. **Запустіть від адміністратора**:
-   - Клацніть правою кнопкою на `disable_windows_updates.bat`
-   - Виберіть "Запустити від адміністратора"
-   - Дозвольте виконання коли буде запит
-
-4. **Дочекайтесь завершення** - скрипт запитає фінальне підтвердження перед перезавантаженням
-
-5. **Перезавантажте комп'ютер**
-
-### Метод 2: Python скрипти
-
-```bash
-# Для відключення:
-python disable_windows_updates.py
-
-# Для включення:
-python enable_windows_updates.py
-```
-
-> **Важливо:** Запустіть PowerShell або Command Prompt від адміністратора перед виконанням!!
-
-## 🔄 Як включити оновлення назад
-
-Якщо ви хочете включити оновлення:
-
-1. Запустіть `enable_windows_updates.bat` від адміністратора
-   - АБО запустіть `python enable_windows_updates.py`
-
-2. Перезавантажте комп'ютер
-
-## ⚠️ Побічні ефекти/Важливо знати
-
-1. **Windows буде показувати спливаючі повідомлення** про необхідність оновлення - це нормально
-2. **Деякі функції можуть не працювати** на системах які залежать від оновлень
-3. **Безпека** - без оновлень ваша система буде менш захищена від нових вразливостей
-4. **Точка відновлення** - програма створює точку відновлення перед відключенням
-
-## 🔐 Безпека
-
-У вас завжди є можливість повернутись назад:
-- **Через точку відновлення** - System Properties → System Protection tab
-- **Запустивши enable скрипт** - включить все назад
-
-## ❓ Часті питання
-
-**Q: Чи це безпечно?**
-A: Так, але отримуйте критичні безпечні оновлення через інші способи.
-
-**Q: Чи буде мій антивірус усередину?**
-A: Можливо потрібно зупинити антивірус перед запуском.
-
-**Q: Чи буде повідомлення про оновлення?**
-A: Так, але вони не будуть встановлюватись.
-
-**Q: Як я включу це назад?**
-A: Просто запустіть enable скрипт.
-
-## 📞 Технічні деталі
-
-Програма модифікує:
-- Служу Windows Update (wuauserv)
-- Background Intelligent Transfer Service (BITS)
-- Delivery Optimization Service (DoSvc)
-- Update Orchestrator Service (UsoSvc)
-- Записи в реєстрі (Group Policy)
-- Запланові задачи для оновлень
-
-## 🐛 Вирішення проблем
-
-### Виникла помилка "Access Denied"
-- Переконайтеся, що запустили від адміністратора
-- Зупиніть антивірус (тимчасово)
-
-### Скрипт не запускається
-- Переконайтеся, що ви в директорії файлів
-- На Windows 10 можна мати необхідність дозволити виконання скриптів
-
-### Хочу скасувати операцію
-- Запустіть enable скрипт
-- Або відновіть систему через точку відновлення
-
-## 📝 Ліцензія
-
-Цей проект розроблений для освітніх цілей та системного адміністрування.
+> **Warning:** Disabling Windows Update reduces your system's security. Use responsibly and re-enable updates periodically to apply critical security patches.
 
 ---
 
-**Автор**: DisablerUpdates Project v1.0  
-**Дата**: 2026
+## Features
 
+- Stops all Windows Update-related services (`wuauserv`, `BITS`, `DoSvc`, `UsoSvc`)
+- Modifies registry keys to prevent services from restarting
+- Disables scheduled update tasks via Task Scheduler
+- Applies Group Policy settings for deeper control
+- Automatically creates a System Restore Point before making any changes
+- Fully reversible — enable updates back with a single script
+
+---
+
+## Project Files
+
+| File | Purpose |
+|------|---------|
+| `disable_windows_updates.bat` | **Recommended** — Disable updates (Batch) |
+| `enable_windows_updates.bat` | **Recommended** — Enable updates (Batch) |
+| `Disable-WindowsUpdates.ps1` | Disable updates (PowerShell) |
+| `Enable-WindowsUpdates.ps1` | Enable updates (PowerShell) |
+| `disable_windows_updates.py` | Disable updates (Python) |
+| `enable_windows_updates.py` | Enable updates (Python) |
+| `Menu.bat` | Interactive menu to choose an action |
+
+---
+
+## Requirements
+
+- Windows 10 or Windows 11
+- Administrator privileges
+- Python 3.x (only for `.py` scripts)
+
+---
+
+## Usage
+
+### Option 1: Batch (Recommended)
+
+1. Right-click `disable_windows_updates.bat` (or `enable_windows_updates.bat`)
+2. Select **Run as administrator**
+3. Follow the on-screen prompts
+4. Reboot your computer
+
+### Option 2: Interactive Menu
+
+```bat
+Menu.bat
+```
+
+Right-click and run as administrator. Choose disable or enable from the menu.
+
+### Option 3: PowerShell
+
+```powershell
+# Allow script execution (one-time setup)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Disable updates
+powershell -ExecutionPolicy Bypass -File "Disable-WindowsUpdates.ps1"
+
+# Enable updates
+powershell -ExecutionPolicy Bypass -File "Enable-WindowsUpdates.ps1"
+```
+
+### Option 4: Python
+
+```bash
+# Disable updates
+python disable_windows_updates.py
+
+# Enable updates
+python enable_windows_updates.py
+```
+
+> Run your terminal (CMD or PowerShell) as Administrator before executing Python scripts.
+
+---
+
+## What Gets Modified
+
+### Services (set to Disabled)
+
+| Service | Display Name | Role |
+|---------|-------------|------|
+| `wuauserv` | Windows Update | Core update service |
+| `bits` | Background Intelligent Transfer Service | Downloads updates |
+| `DoSvc` | Delivery Optimization | Distributes updates |
+| `UsoSvc` | Update Orchestrator Service | Manages update workflow |
+
+### Registry Keys
+
+```
+HKLM\SYSTEM\CurrentControlSet\Services\wuauserv  →  Start = 4 (Disabled)
+HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU  →  NoAutoUpdate = 1
+HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU  →  AUOptions = 2
+```
+
+### Scheduled Tasks (Disabled)
+
+```
+Microsoft\Windows\UpdateOrchestrator\Regular Maintenance
+Microsoft\Windows\UpdateOrchestrator\Reboot
+Microsoft\Windows\UpdateOrchestrator\Schedule Scan
+Microsoft\Windows\Update\Scheduled Start
+```
+
+---
+
+## Re-enabling Updates
+
+Run the enable script at any time:
+
+```bat
+enable_windows_updates.bat
+```
+
+Then reboot. All services, registry keys, and scheduled tasks will be restored to their defaults.
+
+---
+
+## Reverting with System Restore
+
+If something goes wrong, restore from the automatically created restore point:
+
+1. Press `Win + R`, type `rstrui.exe`, press Enter
+2. Select the restore point labeled **"Before disabling Windows Updates"**
+3. Follow the wizard and reboot
+
+---
+
+## Troubleshooting
+
+**"Access Denied" error**
+- Make sure you run the script as Administrator
+- Temporarily disable your antivirus (some flag registry modifications)
+
+**Script won't run**
+- For `.ps1` files, set the execution policy: `Set-ExecutionPolicy RemoteSigned`
+- For `.bat` files, right-click → Run as administrator
+
+**Updates still installing after running the script**
+- Reboot your PC — changes take effect after a restart
+- Verify services are disabled: `sc query wuauserv`
+- Re-run the disable script as Administrator
+
+---
+
+## Security Considerations
+
+Disabling updates leaves your system exposed to known vulnerabilities. Recommended practice:
+
+1. Run `enable_windows_updates.bat` once a month
+2. Install available updates manually
+3. Run `disable_windows_updates.bat` again afterwards
+
+Keep Windows Defender and your firewall active at all times.
+
+---
+
+## License
+
+This project is intended for educational purposes and system administration use.
